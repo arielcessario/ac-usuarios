@@ -550,23 +550,23 @@ function checkUsuario($usuario) {
     $usuario->nombre = (array_key_exists("nombre" , $usuario)) ? '' : $usuario->nombre;
     $usuario->apellido = (array_key_exists("apellido" , $usuario)) ? '' : $usuario->apellido;
     $usuario->mail = (array_key_exists("mail" , $usuario)) ? '' : $usuario->mail;
-    $usuario->nacionalidad_id = (array_key_exists("nacionalidad_id" , $usuario)) ? '' : $usuario->nacionalidad_id;
+    $usuario->nacionalidad_id = (array_key_exists("nacionalidad_id" , $usuario)) ? 0 : $usuario->nacionalidad_id;
     $usuario->tipo_doc = (array_key_exists("tipo_doc" , $usuario)) ? '' : $usuario->tipo_doc;
     $usuario->nro_doc = (array_key_exists("nro_doc" , $usuario)) ? '' : $usuario->nro_doc;
     $usuario->comentarios = (array_key_exists("comentarios" , $usuario)) ? '' : $usuario->comentarios;
-    $usuario->marcado = (array_key_exists("marcado" , $usuario)) ? '' : $usuario->marcado;
+    $usuario->marcado = (array_key_exists("marcado" , $usuario)) ? 0 : $usuario->marcado;
     $usuario->telefono = (array_key_exists("telefono" , $usuario)) ? '' : $usuario->telefono;
     $usuario->fecha_nacimiento = (array_key_exists("fecha_nacimiento" , $usuario)) ? '' : $usuario->fecha_nacimiento;
-    $usuario->profesion_id = (array_key_exists("profesion_id" , $usuario)) ? '' : $usuario->profesion_id;
-    $usuario->saldo = (array_key_exists("saldo" , $usuario)) ? '' : $usuario->saldo;
+    $usuario->profesion_id = (array_key_exists("profesion_id" , $usuario)) ? 0 : $usuario->profesion_id;
+    $usuario->saldo = (array_key_exists("saldo" , $usuario)) ? 0.0 : $usuario->saldo;
     $usuario->password = (array_key_exists("password" , $usuario)) ? '' : $usuario->password;
-    $usuario->rol_id = (array_key_exists("rol_id" , $usuario)) ? '' : $usuario->rol_id;
+    $usuario->rol_id = (array_key_exists("rol_id" , $usuario)) ? 0 : $usuario->rol_id;
     $usuario->news_letter = (array_key_exists("news_letter" , $usuario)) ? '' : $usuario->news_letter;
     $usuario->calle = (array_key_exists("calle" , $usuario)) ? '' : $usuario->calle;
     $usuario->puerta = (array_key_exists("puerta" , $usuario)) ? '' : $usuario->puerta;
     $usuario->piso = (array_key_exists("piso" , $usuario)) ? '' : $usuario->piso;
     $usuario->nro = (array_key_exists("nro" , $usuario)) ? '' : $usuario->nro;
-    $usuario->ciudad_id = (array_key_exists("ciudad_id" , $usuario)) ? '' : $usuario->ciudad_id;
+    $usuario->ciudad_id = (array_key_exists("ciudad_id" , $usuario)) ? 0 : $usuario->ciudad_id;
 
     return $usuario;
 }
