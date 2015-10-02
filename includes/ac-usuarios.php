@@ -291,7 +291,7 @@ function get()
 
     foreach ($results as $key => $row) {
         $db->where('usuario_id', $row['usuario_id']);
-        $row[$key]["password"] = '';
+        $results[$key]["password"] = '';
         $direcciones = $db->get('direcciones');
         $results[$key]['direcciones'] = $direcciones;
     }
