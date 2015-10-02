@@ -111,6 +111,13 @@
             });
         }
 
+        /**
+         * todo: Hay que definir si vale la pena
+         */
+        function checkLastLogin(){
+
+        }
+
 
         /** @name: userExist
          * @params: mail
