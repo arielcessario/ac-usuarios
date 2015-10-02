@@ -320,7 +320,7 @@
 
             UserVars.start = (UserVars.pagina) * UserVars.paginacion;
             UserVars.pagina = UserVars.pagina + 1;
-            UserVars.end = UserVars.start + UserVars.paginacion;
+            //UserVars.end = UserVars.start + UserVars.paginacion;
             return UserVars;
         }
 
@@ -334,7 +334,7 @@
                 return;
             }
 
-            UserVars.end = UserVars.start;
+            //UserVars.end = UserVars.start;
             UserVars.start = (UserVars.pagina - 2 ) * UserVars.paginacion;
             UserVars.pagina = UserVars.pagina - 1;
             return UserVars;
@@ -365,7 +365,9 @@
         // Registro inicial
         this.start = 0;
         // Registro Final
-        this.end = this.start + this.paginacion;
+        this.end = function(){
+            return this.start + this.paginacion;
+        };
 
 
         // Indica si se debe limpiar el caché la próxima vez que se solicite un get
