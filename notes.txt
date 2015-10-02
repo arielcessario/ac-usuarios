@@ -1,0 +1,5 @@
+Dependencies:
+ng-cookies
+angular-storage (a0-angular-storage)
+angular-jwt
+constants.js (constants), archivo de js que tiene un solo servicio que devuelve constantes
