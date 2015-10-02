@@ -12,13 +12,13 @@
                 };
                 $httpProvider.interceptors.push('jwtInterceptor');
             }])
-        .factory('UsuarioService', UsuarioService)
+        .factory('UserService', UserService)
         .service('UserVars', UserVars)
     ;
 
 
-    UsuarioService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory'];
-    function UsuarioService($http, $cookieStore, store, UserVars, $cacheFactory) {
+    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory'];
+    function UserService($http, $cookieStore, store, UserVars, $cacheFactory) {
         //Variables
         var service = {};
 
