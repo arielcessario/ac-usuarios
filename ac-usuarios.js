@@ -365,7 +365,7 @@
         // Registro inicial
         this.start = 0;
         // Registro Final
-        this.end = this.start + this.pagina;
+        this.end = this.start + this.paginacion;
 
 
         // Indica si se debe limpiar el caché la próxima vez que se solicite un get
