@@ -15,7 +15,7 @@
         //Variables
         var service = {};
 
-        var url = currentScriptPath.replace('.js', '.php');
+        var url = currentScriptPath.replace('ac-usuarios.js', '/includes/ac-usuarios.php');
 
         //Function declarations
         service.getLogged = getLogged;
