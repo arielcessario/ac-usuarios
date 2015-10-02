@@ -5,6 +5,13 @@
     var currentScriptPath = scripts[scripts.length - 1].src;
 
     angular.module('acUsuarios', ['ngCookies'])
+        .config(['$routeProvider', 'jwtInterceptorProvider', '$httpProvider',
+            function ($routeProvider, jwtInterceptorProvider, $httpProvider) {
+                jwtInterceptorProvider.tokenGetter = function (store) {
+                    return store.get('jwt');
+                };
+                $httpProvider.interceptors.push('jwtInterceptor');
+            }])
         .factory('UsuarioService', UsuarioService)
         .service('UserVars', UserVars)
     ;
@@ -114,7 +121,7 @@
         /**
          * todo: Hay que definir si vale la pena
          */
-        function checkLastLogin(){
+        function checkLastLogin() {
 
         }
 
@@ -152,7 +159,7 @@
                 {'function': 'login', 'mail': mail, 'password': password})
                 .success(function (data) {
                     if (data != -1) {
-                        $cookieStore.set('user', data.user);
+                        $cookieStore.put('user', data.user);
                         store.set('jwt', data.token);
                     }
                     callback(data);
