@@ -562,6 +562,11 @@ function checkUsuario($usuario) {
     $usuario->password = (array_key_exists("password" , $usuario)) ? '' : $usuario->password;
     $usuario->rol_id = (array_key_exists("rol_id" , $usuario)) ? '' : $usuario->rol_id;
     $usuario->news_letter = (array_key_exists("news_letter" , $usuario)) ? '' : $usuario->news_letter;
+    $usuario->calle = (array_key_exists("calle" , $usuario)) ? '' : $usuario->calle;
+    $usuario->puerta = (array_key_exists("puerta" , $usuario)) ? '' : $usuario->puerta;
+    $usuario->piso = (array_key_exists("piso" , $usuario)) ? '' : $usuario->piso;
+    $usuario->nro = (array_key_exists("nro" , $usuario)) ? '' : $usuario->nro;
+    $usuario->ciudad_id = (array_key_exists("ciudad_id" , $usuario)) ? '' : $usuario->ciudad_id;
 
     return $usuario;
 }
