@@ -226,7 +226,7 @@ function createToken()
     $notBefore = $issuedAt + 10;             //Adding 10 seconds
     $expire = $notBefore + 60;            // Adding 60 seconds
     global $serverName; // Retrieve the server name from config file
-    $aud = '';
+    $aud = $serverName;
 //        $serverName = $config->get('serverName'); // Retrieve the server name from config file
 
     /*
