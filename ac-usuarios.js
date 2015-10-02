@@ -5,13 +5,13 @@
     var currentScriptPath = scripts[scripts.length - 1].src;
 
     angular.module('acUsuarios', ['ngCookies'])
-        .factory('LoginService', LoginService)
+        .factory('UsuarioService', UsuarioService)
         .service('UserVars', UserVars)
     ;
 
 
-    LoginService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory'];
-    function LoginService($http, $cookieStore, store, UserVars, $cacheFactory) {
+    UsuarioService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory'];
+    function UsuarioService($http, $cookieStore, store, UserVars, $cacheFactory) {
         //Variables
         var service = {};
 
