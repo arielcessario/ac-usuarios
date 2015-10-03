@@ -13,9 +13,10 @@
                 $httpProvider.interceptors.push('jwtInterceptor');
             }])
         .run(function ($rootScope, store, jwtHelper, $location, UserVars) {
+            // Para activar la seguridad en una vista, agregar data:{requiresLogin:false} dentro de $routeProvider.when
+
             $rootScope.$on('$routeChangeStart', function (e, to) {
                 if (to && to.data && to.data.requiresLogin) {
-                    console.log('redirect');
                     if (!store.get('jwt')) {
                         e.preventDefault();
                         $location.path(UserVars.loginPath);
