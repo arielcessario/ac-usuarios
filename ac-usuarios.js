@@ -44,8 +44,8 @@
         service.forgotPassword = forgotPassword;
 
         service.goToAPagina = goToPagina;
-        service.nextPagina = nextPagina;
-        service.previousPagina = previousPagina;
+        service.next = next;
+        service.prev = prev;
 
         return service;
 
@@ -97,6 +97,7 @@
                 .success(function (data) {
                     $httpDefaultCache.put(urlGet, data);
                     UserVars.clearCache = false;
+                    UserVars.paginas = (data.length % UserVars.paginacion == 0) ? parseInt(data.length / UserVars.paginacion) : parseInt(data.length / UserVars.paginacion) + 1;
                     callback(data);
                 })
                 .error(function (data) {
@@ -320,13 +321,12 @@
          * @description Ir a próxima página
          * @returns {*}
          */
-        function nextPagina() {
+        function next() {
 
             if (UserVars.pagina + 1 > UserVars.paginas) {
-                return;
+                return UserVars;
             }
-
-            UserVars.start = (UserVars.pagina) * UserVars.paginacion;
+            UserVars.start = (UserVars.pagina * UserVars.paginacion);
             UserVars.pagina = UserVars.pagina + 1;
             //UserVars.end = UserVars.start + UserVars.paginacion;
             return UserVars;
@@ -337,9 +337,11 @@
          * @description Ir a página anterior
          * @returns {*}
          */
-        function previousPagina() {
-            if (UserVars.pagina - 2 <= 0) {
-                return;
+        function prev() {
+
+
+            if (UserVars.pagina - 2 < 0) {
+                return UserVars;
             }
 
             //UserVars.end = UserVars.start;
@@ -347,7 +349,6 @@
             UserVars.pagina = UserVars.pagina - 1;
             return UserVars;
         }
-
 
 
     }
@@ -360,17 +361,13 @@
      */
     function UserVars() {
         // Cantidad de páginas total del recordset
-        this.paginas = 0;
+        this.paginas = 1;
         // Página seleccionada
-        this.pagina = 0;
+        this.pagina = 1;
         // Cantidad de registros por página
         this.paginacion = 10;
-        // Registro inicial
+        // Registro inicial, no es página, es el registro
         this.start = 0;
-        // Registro Final
-        this.end = function(){
-            return this.start + this.paginacion;
-        };
 
 
         // Indica si se debe limpiar el caché la próxima vez que se solicite un get
