@@ -12,6 +12,17 @@
                 };
                 $httpProvider.interceptors.push('jwtInterceptor');
             }])
+        .run(function ($rootScope, store, jwtHelper, $location, UserVars) {
+            $rootScope.$on('$routeChangeStart', function (e, to) {
+                if (to && to.data && to.data.requiresLogin) {
+                    console.log('redirect');
+                    if (!store.get('jwt')) {
+                        e.preventDefault();
+                        $location.path(UserVars.loginPath);
+                    }
+                }
+            });
+        })
         .factory('UserService', UserService)
         .service('UserVars', UserVars)
     ;
@@ -407,6 +418,9 @@
 
         // Indica si se debe limpiar el caché la próxima vez que se solicite un get
         this.clearCache = true;
+
+        // Path al login
+        this.loginPath = '/login';
     }
 
 })();
