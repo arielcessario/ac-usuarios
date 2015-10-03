@@ -569,7 +569,7 @@ function addLogin($usuario_id, $sucursal_id, $ok){
 function checkUsuario($usuario) {
 
 
-    $usuario->nombre = (!array_key_exists("nombre" , $usuario)) ? '' : $usuario->apellido;
+    $usuario->nombre = (!array_key_exists("nombre" , $usuario)) ? '' : $usuario->nombre;
     $usuario->apellido = (!array_key_exists("apellido" , $usuario)) ? '' : $usuario->apellido;
     $usuario->mail = (!array_key_exists("mail" , $usuario)) ? '' : $usuario->mail;
     $usuario->nacionalidad_id = (!array_key_exists("nacionalidad_id" , $usuario)) ? 0 : $usuario->nacionalidad_id;
