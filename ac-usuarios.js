@@ -51,7 +51,7 @@
 
         //Functions
         /** @name: remove
-         * @params: usuario_id, callback
+         * @param usuario_id, callback
          * @description: Elimina el usuario seleccionado.
          */
         function remove(usuario_id, callback) {
@@ -70,7 +70,7 @@
         }
 
         /** @name: get
-         * @params: callback
+         * @param callback
          * @description: Retorna todos los usuario de la base.
          */
         function get(callback) {
@@ -106,7 +106,7 @@
         }
 
         /** @name: getById
-         * @params: usuario_id, callback
+         * @param usuario_id, callback
          * @description: Retorna el usuario que tenga el id enviado.
          */
         function getById(id, callback) {
@@ -127,7 +127,7 @@
 
 
         /** @name: userExist
-         * @params: mail
+         * @param mail
          * @description: Verifica que el mail no exista en la base.
          */
         function userExist(mail, callback) {
@@ -150,13 +150,18 @@
         }
 
 
-        /**@name: login
-         @params: mail, password, callback
-         @description: realiza login
+        /**
+         *
+         * @description: realiza login
+         * @param mail
+         * @param password
+         * @param sucursal_id
+         * @param callback
+         * @returns {*}
          */
-        function login(mail, password, callback) {
+        function login(mail, password, sucursal_id, callback) {
             return $http.post(url,
-                {'function': 'login', 'mail': mail, 'password': password})
+                {'function': 'login', 'mail': mail, 'password': password, 'sucursal_id': sucursal_id})
                 .success(function (data) {
                     if (data != -1) {
                         $cookieStore.put('user', data.user);
@@ -169,9 +174,11 @@
                 })
         }
 
-        /** @name: create
-         * @params: usuario, callback
+        /**
          * @description: Crea un usuario.
+         * @param usuario
+         * @param callback
+         * @returns {*}
          */
         function create(usuario, callback) {
 
@@ -191,7 +198,6 @@
         }
 
         /** @name: getLogged
-         * @params:
          * @description: Retorna si existe una cookie de usuario.
          */
         function getLogged() {
@@ -205,7 +211,7 @@
         }
 
         /** @name: setLogged
-         * @params:
+         * @param user
          * @description: Setea al usuario en una cookie. No está agregado al login ya que no en todos los casos se necesita cookie.
          */
         function setLogged(user) {
@@ -231,7 +237,8 @@
         }
 
         /** @name: getByEmail
-         * @params: mail, callback
+         * @param mail
+         * @param callback
          * @description: Obtiene al usuario filtrado por mail del cache completo.
          */
         function getByEmail(mail, callback) {
@@ -244,7 +251,8 @@
         }
 
         /** @name: update
-         * @params: usuario, callback
+         * @param usuario
+         * @param callback
          * @description: Realiza update al usuario.
          */
         function update(usuario, callback) {
@@ -264,7 +272,7 @@
 
 
         /** @name: forgotPassword
-         * @params: email
+         * @param email
          * @description: Genera y reenvia el pass al usuario.
          */
         function forgotPassword(email, callback) {
@@ -340,11 +348,6 @@
             return UserVars;
         }
 
-        /**
-         * @description remueve los valores undefined
-         * @param usuario
-         * @returns {*}
-         */
 
 
     }

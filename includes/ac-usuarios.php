@@ -59,7 +59,7 @@ if ($jwt_enabled) {
 
 if ($decoded != null) {
     if ($decoded->function == 'login') {
-        login($decoded->mail, $decoded->password);
+        login($decoded->mail, $decoded->password, $decoded->sucursal_id);
     } else if ($decoded->function == 'checkLastLogin') {
         checkLastLogin($decoded->userid);
     } else if ($decoded->function == 'create') {
@@ -83,7 +83,7 @@ if ($decoded != null) {
 }
 
 /* @name: checkSecurity
- * @params:
+ * @param
  * @description: Verifica las credenciales enviadas. En caso de no ser correctas, retorna el error correspondiente.
  */
 function checkSecurity()
@@ -125,7 +125,7 @@ function checkSecurity()
 }
 
 /* @name: forgotPassword
- * @params: $email = email del usuario
+ * @param $email = email del usuario
  * @description: Envia al usuario que lo solicita, un password aleatorio. El password se envía desde acá porque no debe
  * pasar por js, el js está en el cliente, lo cual podría dar un punto para conseguir un pass temporal.
  * todo: Agregar tiempo límite para el cambio. Agregar template de mail dinámico.
@@ -213,7 +213,7 @@ function randomPassword()
 
 
 /* @name: createToken
- * @params:
+ * @param
  * @description: Envia al usuario que lo solicita, un password aleatorio.
  * @return: JWT:string de token
  * todo: Agregar tiempos de expiración. Evaluar si hay que devolver algún dato dentro de data.
@@ -256,7 +256,7 @@ function createToken()
 }
 
 /* @name: remove
- * @params: $usuario_id = id de usuario
+ * @param $usuario_id = id de usuario
  * @description: Borra un usuario y su dirección.
  * todo: Sacar dirección y crear sus propias clases dentro de este mismo módulo.
  */
@@ -280,7 +280,7 @@ function remove($usuario_id)
 }
 
 /* @name: get
- * @params:
+ * @param
  * @description: Obtiene todos los usuario con sus direcciones.
  * todo: Sacar dirección y crear sus propias clases dentro de este mismo módulo.
  */
@@ -300,11 +300,13 @@ function get()
 
 
 /* @name: login
- * @params: $email, $password
+ * @param $mail
+ * @param $password
+ * @param $sucursal_id
  * @description: Valida el ingreso de un usuario.
  * todo: Sacar dirección y crear sus propias clases dentro de este mismo módulo.
  */
-function login($mail, $password)
+function login($mail, $password, $sucursal_id)
 {
     $db = new MysqliDb();
     $db->where("mail", $mail);
@@ -328,8 +330,9 @@ function login($mail, $password)
             } else {
                 echo json_encode(array('token' => '', 'user' => $results[0]));
             }
+            addLogin($results[0]['usuario_id'], $sucursal_id, 1);
         } else {
-
+            addLogin($results[0]['usuario_id'], $sucursal_id, 0);
             echo json_encode(-1);
         }
     } else {
@@ -340,7 +343,7 @@ function login($mail, $password)
 }
 
 /* @name: checkLastLogin
- * @params: $userid
+ * @param $userid
  * @description: --
  * todo: Este método podría volar, se puede verificar con jwt el último login.
  */
@@ -365,7 +368,7 @@ function checkLastLogin($userid)
 }
 
 /* @name: create
- * @params: $user
+ * @param $user
  * @description: Crea un nuevo usuario y su dirección
  * todo: Sacar dirección, el usuario puede tener varias direcciones.
  */
@@ -424,7 +427,7 @@ function create($user)
 
 
 /* @name: clientExist
- * @params: $mail
+ * @param $mail
  * @description: Verifica si un usuario existe
  * todo:
  */
@@ -449,7 +452,9 @@ function userExist($mail)
 
 
 /* @name: changePassword
- * @params: $usuario_id, $pass_old, $pass_new
+ * @param $usuario_id
+ * @param $pass_old
+ * @param $pass_new
  * @description: Cambia el password, puede verificar que el anterior sea correcto o simplemente hacer un update
  * (pass_old == ''), depende de la seguridad que se requiera.
  * todo:
@@ -483,7 +488,7 @@ function changePassword($usuario_id, $pass_old, $pass_new)
 
 
 /* @name: create
- * @params: $user
+ * @param $user
  * @description: Update de usuario y dirección
  * todo: Sacar dirección, el usuario puede tener varias direcciones.
  */
@@ -538,6 +543,22 @@ function update($user)
     } else {
         echo json_encode(-1);
     }
+}
+
+/**
+ * @desciption Crea un registro de login en el histórico
+ * @param $usuario_id
+ * @param $sucursal_id
+ * @param $ok
+ */
+function addLogin($usuario_id, $sucursal_id, $ok){
+    $db = new MysqliDb();
+    $data = array('usuario_id'=> $usuario_id, 
+        'sucursal_id' => $sucursal_id,
+        'ok' => $ok);
+    
+    $db->insert('logins', $data);
+
 }
 
 /**
