@@ -43,7 +43,7 @@
         service.userExist = userExist;
         service.forgotPassword = forgotPassword;
 
-        service.goToAPagina = goToPagina;
+        service.goToPagina = goToPagina;
         service.next = next;
         service.prev = prev;
 
@@ -292,34 +292,64 @@
         }
 
         /**
+         * Para el uso de la páginación, definir en el controlador las siguientes variables:
+         *
+         vm.start = 0;
+         vm.pagina = UserVars.pagina;
+         UserVars.paginacion = 5; Cantidad de registros por página
+         vm.end = UserVars.paginacion;
+
+
+         En el HTML, en el ng-repeat agregar el siguiente filtro: limitTo:appCtrl.end:appCtrl.start;
+
+         Agregar un botón de next:
+         <button ng-click="appCtrl.next()">next</button>
+
+         Agregar un botón de prev:
+         <button ng-click="appCtrl.prev()">prev</button>
+
+         Agregar un input para la página:
+         <input type="text" ng-keyup="appCtrl.goToPagina()" ng-model="appCtrl.pagina">
+
+         */
+
+
+        /**
          * @description: Ir a página
          * @param pagina
          * @returns {*}
+         * uso: agregar un método
+         vm.goToPagina = function () {
+                vm.start= UserService.goToPagina(vm.pagina).start;
+            };
          */
         function goToPagina(pagina) {
 
-            if (UserVars.pagina < 1) {
+            if (isNaN(pagina) || pagina < 1) {
                 UserVars.pagina = 1;
-                return;
+                return UserVars;
             }
 
-            if (UserVars.pagina > UserVars.paginas) {
+            if (pagina > UserVars.paginas) {
                 UserVars.pagina = UserVars.paginas;
-                return;
+                return UserVars;
             }
 
-
-            UserVars.pagina = pagina;
+            UserVars.pagina = pagina - 1;
             UserVars.start = UserVars.pagina * UserVars.paginacion;
-            UserVars.end = UserVars.start + UserVars.paginacion;
             return UserVars;
 
         }
 
         /**
-         * @name nextPagina
+         * @name next
          * @description Ir a próxima página
          * @returns {*}
+         * uso agregar un metodo
+         vm.next = function () {
+                vm.start = UserService.next().start;
+                vm.pagina = UserVars.pagina;
+            };
          */
         function next() {
 
@@ -333,9 +363,14 @@
         }
 
         /**
-         * @name previousPagina
+         * @name previous
          * @description Ir a página anterior
          * @returns {*}
+         * uso, agregar un método
+         vm.prev = function () {
+                vm.start= UserService.prev().start;
+                vm.pagina = UserVars.pagina;
+            };
          */
         function prev() {
 
