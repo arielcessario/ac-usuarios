@@ -7,19 +7,8 @@ session_start();
 
 require 'PHPMailerAutoload.php';
 
-
-// false local / true production
-$jwt_enabled = true;
 // Token
 $decoded_token = null;
-// JWT Secret Key
-$secret = 'uiglp';
-// JWT AUD
-$serverName = 'serverName';
-
-
-
-
 
 if (file_exists('../../../includes/MyDBi.php')) {
     require_once '../../../includes/MyDBi.php';
