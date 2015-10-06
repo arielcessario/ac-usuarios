@@ -19,6 +19,8 @@ $serverName = 'serverName';
 
 require_once '/config.php';
 
+echo __FILE__;
+
 if (file_exists('../../../MyDBi.php')) {
     require_once '../../../MyDBi.php';
 } else {
