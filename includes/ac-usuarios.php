@@ -17,12 +17,13 @@ $secret = 'uiglp';
 // JWT AUD
 $serverName = 'serverName';
 
-require_once '/config.php';
 
-echo __FILE__;
 
-if (file_exists('../../../MyDBi.php')) {
-    require_once '../../../MyDBi.php';
+
+
+if (file_exists('../../../includes/MyDBi.php')) {
+    require_once '../../../includes/MyDBi.php';
+    require_once '../../../includes/config.php';
 } else {
     require_once 'MyDBi.php';
 }
