@@ -48,6 +48,7 @@
         service.get = get;
         service.getById = getById;
         service.getByEmail = getByEmail;
+        service.getByParams = getByParams;
 
         service.login = login;
         service.logout = logout;
@@ -62,6 +63,39 @@
         return service;
 
         //Functions
+
+        /**
+         *
+         * @param param
+         * @param value
+         * @param callback
+         */
+        function getByParams(param, value, callback) {
+            get(function (data) {
+                var parametros = param.split(',');
+                var response = data.filter(function (elem, index, array) {
+
+                    var columns = Object.keys(elem);
+
+                    var respuesta = [];
+                    for(var i = 0; i<columns.length; i++){
+                        for(var x = 0; x<parametros.length; x++){
+                            if(columns[i] == parametros[x]){
+                                if(elem[i]== value){
+                                    respuesta.push(elem);
+                                }
+                            }
+                        }
+                    }
+
+                    return respuesta;
+                });
+
+                callback(response);
+            })
+        }
+
+
         /** @name: remove
          * @param usuario_id, callback
          * @description: Elimina el usuario seleccionado.
