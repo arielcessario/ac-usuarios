@@ -66,11 +66,13 @@
 
         /**
          *
-         * @param param
-         * @param value
+         * @description Retorna la lista filtrada de productos
+         * @param param -> String, separado por comas (,) que contiene la lista de parámetros de búsqueda, por ej: nombre, sku, tienen que ser el mismo nombre que en la base
+         * @param value -> termino a buscar
+         * @param exact_match -> true, busca la palabra exacta, false, busca si el termino aparece
          * @param callback
          */
-        function getByParams(param, value, callback) {
+        function getByParams(param, value, exact_match, callback) {
             get(function (data) {
                 var parametros = param.split(',');
 
@@ -82,7 +84,10 @@
                     for (var i = 0; i < columns.length; i++) {
                         for (var x = 0; x < parametros.length; x++) {
                             if (columns[i] == parametros[x]) {
-                                if (data[y][Object.keys(data[y])[i]] == value) {
+                                if (
+                                    ( exact_match && data[y][Object.keys(data[y])[i]].toUpperCase() == value.toUpperCase()) ||
+                                    (!exact_match && data[y][Object.keys(data[y])[i]].toUpperCase().indexOf(value.toUpperCase()) > -1)
+                                ) {
                                     respuesta.push(data[y]);
                                     x = parametros.length;
                                     i = columns.length;
@@ -90,9 +95,7 @@
                             }
                         }
                     }
-
                 }
-
                 callback(respuesta);
             })
         }
