@@ -47,7 +47,6 @@
 
         service.get = get;
         service.getById = getById;
-        service.getByEmail = getByEmail;
         service.getByParams = getByParams;
 
         service.login = login;
@@ -288,19 +287,6 @@
                 })
         }
 
-        /** @name: getByEmail
-         * @param mail
-         * @param callback
-         * @description: Obtiene al usuario filtrado por mail del cache completo.
-         */
-        function getByEmail(mail, callback) {
-            get(function (data) {
-                var response = data.filter(function (elem, index, array) {
-                    return elem.mail == mail;
-                })[0];
-                callback(response);
-            });
-        }
 
         /** @name: update
          * @param usuario
