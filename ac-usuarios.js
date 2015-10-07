@@ -73,25 +73,27 @@
         function getByParams(param, value, callback) {
             get(function (data) {
                 var parametros = param.split(',');
-                var response = data.filter(function (elem, index, array) {
 
-                    var columns = Object.keys(elem);
 
-                    var respuesta = [];
-                    for(var i = 0; i<columns.length; i++){
-                        for(var x = 0; x<parametros.length; x++){
-                            if(columns[i] == parametros[x]){
-                                if(elem[i]== value){
-                                    respuesta.push(elem);
+                var respuesta = [];
+                for (var y = 0; y < data.length; y++) {
+                    var columns = Object.keys(data[y]);
+
+                    for (var i = 0; i < columns.length; i++) {
+                        for (var x = 0; x < parametros.length; x++) {
+                            if (columns[i] == parametros[x]) {
+                                if (data[y][Object.keys(data[y])[i]] == value) {
+                                    respuesta.push(data[y]);
+                                    x = parametros.length;
+                                    i = columns.length;
                                 }
                             }
                         }
                     }
 
-                    return respuesta;
-                });
+                }
 
-                callback(response);
+                callback(respuesta);
             })
         }
 
