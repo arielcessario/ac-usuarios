@@ -83,9 +83,12 @@
                     for (var i = 0; i < columns.length; i++) {
                         for (var x = 0; x < parametros.length; x++) {
                             if (columns[i] == parametros[x]) {
+
+                                var base = '' + data[y][Object.keys(data[y])[i]];
+                                var valor = '' + value;
                                 if (
-                                    ( exact_match && data[y][Object.keys(data[y])[i]].toUpperCase() == value.toUpperCase()) ||
-                                    (!exact_match && data[y][Object.keys(data[y])[i]].toUpperCase().indexOf(value.toUpperCase()) > -1)
+                                    ( exact_match && base.toUpperCase() == valor.toUpperCase()) ||
+                                    (!exact_match && base.indexOf(valor) > -1)
                                 ) {
                                     respuesta.push(data[y]);
                                     x = parametros.length;
