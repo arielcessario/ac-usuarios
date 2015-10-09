@@ -114,6 +114,7 @@
                     //console.log(data);
                     if (data !== 'false') {
 
+                        UserVars.clearCache = true;
                         callback(data);
                     }
                 })
