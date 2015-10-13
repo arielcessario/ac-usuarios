@@ -29,8 +29,8 @@
     ;
 
 
-    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory', 'AcUtilsService'];
-    function UserService($http, $cookieStore, store, UserVars, $cacheFactory, AcUtilsService) {
+    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory', 'AcUtils'];
+    function UserService($http, $cookieStore, store, UserVars, $cacheFactory, AcUtils) {
         //Variables
         var service = {};
 
@@ -73,7 +73,7 @@
          */
         function getByParams(params, values, exact_match, callback) {
             get(function (data) {
-                AcUtilsService.getByParams(params, values, exact_match, data, callback);
+                AcUtils.getByParams(params, values, exact_match, data, callback);
             })
         }
 
