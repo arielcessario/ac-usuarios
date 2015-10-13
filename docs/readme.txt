@@ -5,6 +5,7 @@ Dependencies:
 ng-cookies
 angular-storage (a0-angular-storage)
 angular-jwt
+ac-angular-utils
 
 Notas:
 En el raíz del sitio se debe crear una carpeta llamada includes y dentro de la misma crear un archivo llamado config.php

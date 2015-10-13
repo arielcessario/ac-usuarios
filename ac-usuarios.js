@@ -29,8 +29,8 @@
     ;
 
 
-    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory'];
-    function UserService($http, $cookieStore, store, UserVars, $cacheFactory) {
+    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory', 'AcUtilsService'];
+    function UserService($http, $cookieStore, store, UserVars, $cacheFactory, AcUtilsService) {
         //Variables
         var service = {};
 
@@ -71,34 +71,9 @@
          * @param exact_match -> true, busca la palabra exacta, false, busca si el termino aparece
          * @param callback
          */
-        function getByParams(param, value, exact_match, callback) {
+        function getByParams(params, values, exact_match, callback) {
             get(function (data) {
-                var parametros = param.split(',');
-
-
-                var respuesta = [];
-                for (var y = 0; y < data.length; y++) {
-                    var columns = Object.keys(data[y]);
-
-                    for (var i = 0; i < columns.length; i++) {
-                        for (var x = 0; x < parametros.length; x++) {
-                            if (columns[i] == parametros[x]) {
-
-                                var base = '' + data[y][Object.keys(data[y])[i]];
-                                var valor = '' + value;
-                                if (
-                                    ( exact_match && base.toUpperCase() == valor.toUpperCase()) ||
-                                    (!exact_match && base.indexOf(valor) > -1)
-                                ) {
-                                    respuesta.push(data[y]);
-                                    x = parametros.length;
-                                    i = columns.length;
-                                }
-                            }
-                        }
-                    }
-                }
-                callback(respuesta);
+                AcUtilsService.getByParams(params, values, exact_match, data, callback);
             })
         }
 
@@ -161,7 +136,8 @@
         }
 
         /** @name: getById
-         * @param usuario_id, callback
+         * @param id
+         * @param callback
          * @description: Retorna el usuario que tenga el id enviado.
          */
         function getById(id, callback) {
