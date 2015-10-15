@@ -8,7 +8,7 @@
         .config(['$routeProvider', 'jwtInterceptorProvider', '$httpProvider',
             function ($routeProvider, jwtInterceptorProvider, $httpProvider) {
                 jwtInterceptorProvider.tokenGetter = function (store) {
-                    return store.get('jwt');
+                    return store.get(window.appName);
                 };
                 $httpProvider.interceptors.push('jwtInterceptor');
             }])
@@ -17,7 +17,7 @@
 
             $rootScope.$on('$routeChangeStart', function (e, to) {
                 if (to && to.data && to.data.requiresLogin) {
-                    if (!store.get('jwt')) {
+                    if (!store.get(window.appName)) {
                         e.preventDefault();
                         $location.path(UserVars.loginPath);
                     }
@@ -175,7 +175,7 @@
          @description: Logout
          */
         function logout() {
-            store.remove('jwt');
+            store.remove(window.appName);
             $cookieStore.remove('user');
             UserVars.clearCache = true;
         }
@@ -196,7 +196,7 @@
                 .success(function (data) {
                     if (data != -1) {
                         $cookieStore.put('user', data.user);
-                        store.set('jwt', data.token);
+                        store.set(window.appName, data.token);
                     }
                     callback(data);
                 })

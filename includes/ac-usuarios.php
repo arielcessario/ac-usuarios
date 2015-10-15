@@ -272,7 +272,7 @@ function login($mail, $password, $sucursal_id)
         if (password_verify($password, $hash)) {
             $results[0]['password'] = '';
             // Si la seguridad se encuentra habilitada, retorna el token y el usuario sin password
-            $results[0]->sucursal = $sucursal_id;
+            $results[0]->sucursal = $sucursal_id; //-1 == web
             if ($jwt_enabled) {
                 echo json_encode(
                     array(
