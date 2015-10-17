@@ -2,12 +2,12 @@
 # USUARIOS
 CREATE TABLE usuarios (
   usuario_id int(11) NOT NULL AUTO_INCREMENT,
-  nombre varchar(45) NOT NULL,
-  apellido varchar(45) NOT NULL,
+  nombre varchar(100) NOT NULL,
+  apellido varchar(100) NOT NULL,
   mail varchar(100) NOT NULL,
   nacionalidad_id int(11) DEFAULT NULL,
   tipo_doc int(11) NOT NULL,
-  nro_doc varchar(45) NOT NULL,
+  nro_doc varchar(20) NOT NULL,
   comentarios varchar(450) DEFAULT NULL,
   marcado varchar(8) DEFAULT NULL,
   telefono varchar(45) DEFAULT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE usuarios (
 CREATE TABLE direcciones (
   direccion_id int(11) NOT NULL AUTO_INCREMENT,
   usuario_id int(11) DEFAULT NULL,
-  calle varchar(45) NOT NULL,
+  calle varchar(150) NOT NULL,
   nro int(11) NOT NULL,
   piso int(3) default null,
   puerta varchar(3) default NULL ,

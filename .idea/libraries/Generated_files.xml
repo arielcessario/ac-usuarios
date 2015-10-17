@@ -3,10 +3,12 @@
     <properties>
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/ac-usuarios.min.js" />
+        <item url="file://$PROJECT_DIR$/ac-usuarios.min.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/ac-usuarios.min.js" />
+      <root url="file://$PROJECT_DIR$/ac-usuarios.min.min.js" />
     </CLASSES>
     <SOURCES />
   </library>

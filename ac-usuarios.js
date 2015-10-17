@@ -15,6 +15,7 @@
         .run(function ($rootScope, store, jwtHelper, $location, UserVars) {
             // Para activar la seguridad en una vista, agregar data:{requiresLogin:false} dentro de $routeProvider.when
 
+
             $rootScope.$on('$routeChangeStart', function (e, to) {
                 if (to && to.data && to.data.requiresLogin) {
                     if (!store.get(window.appName)) {
@@ -88,7 +89,6 @@
                 .success(function (data) {
                     //console.log(data);
                     if (data !== 'false') {
-
                         UserVars.clearCache = true;
                         callback(data);
                     }
@@ -106,7 +106,6 @@
             var urlGet = url + '?function=get';
             var $httpDefaultCache = $cacheFactory.get('$http');
             var cachedData = [];
-
 
             // Verifica si existe el cache de usuarios
             if ($httpDefaultCache.get(urlGet) != undefined) {
@@ -212,7 +211,6 @@
          * @returns {*}
          */
         function create(usuario, callback) {
-
             return $http.post(url,
                 {
                     'function': 'create',
@@ -234,7 +232,7 @@
         function getLogged() {
             var globals = $cookieStore.get('user');
 
-            if (globals !== undefined && globals.user !== undefined) {
+            if (globals !== undefined) {
                 return globals;
             } else {
                 return false;
@@ -250,7 +248,6 @@
         }
 
         function changePassword(usuario_id, pass_old, pass_new, callback) {
-
             return $http.post(url,
                 {
                     function: 'changePassword',
@@ -294,7 +291,6 @@
          * @description: Genera y reenvia el pass al usuario.
          */
         function forgotPassword(email, callback) {
-
             return $http.post(url,
                 {
                     'function': 'forgotPassword',
@@ -341,7 +337,6 @@
             };
          */
         function goToPagina(pagina) {
-
             if (isNaN(pagina) || pagina < 1) {
                 UserVars.pagina = 1;
                 return UserVars;
@@ -355,7 +350,6 @@
             UserVars.pagina = pagina - 1;
             UserVars.start = UserVars.pagina * UserVars.paginacion;
             return UserVars;
-
         }
 
         /**
@@ -369,7 +363,6 @@
             };
          */
         function next() {
-
             if (UserVars.pagina + 1 > UserVars.paginas) {
                 return UserVars;
             }
@@ -390,8 +383,6 @@
             };
          */
         function prev() {
-
-
             if (UserVars.pagina - 2 < 0) {
                 return UserVars;
             }
@@ -420,7 +411,6 @@
         this.paginacion = 10;
         // Registro inicial, no es página, es el registro
         this.start = 0;
-
 
         // Indica si se debe limpiar el caché la próxima vez que se solicite un get
         this.clearCache = true;
