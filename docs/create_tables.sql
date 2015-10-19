@@ -15,7 +15,7 @@ CREATE TABLE usuarios (
   profesion_id int(11) DEFAULT NULL,
   saldo varchar(8) NOT NULL DEFAULT '0.0',
   password varchar(100) DEFAULT NULL,
-  rol_id int(11) NOT NULL DEFAULT '0', -- TODO: Just for now: 0 - Admin; 1 - Usuario; 2 - Proveedor
+  rol_id int(11) NOT NULL DEFAULT '0', -- TODO: Just for now: 0 - Admin; 1 - Usuario; 2 - Proveedor; 3 - Cliente
   news_letter int(1) DEFAULT NULL,
   PRIMARY KEY (usuario_id)
 ) ENGINE=MyISAM AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
