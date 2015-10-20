@@ -86,7 +86,7 @@ function getDeudores()
     $db = new MysqliDb();
     $deudores = array();
 
-    $results = $db->rawQuery('Select cliente_id, nombre, apellido, saldo, 0 asientos from clientes where saldo <= -1;');
+    $results = $db->rawQuery('Select usuario_id, nombre, apellido, saldo, 0 asientos from usuarios where saldo <= -1;');
 
 
     foreach ($results as $key => $row) {

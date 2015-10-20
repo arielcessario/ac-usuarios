@@ -73,7 +73,7 @@
         function getDeudorById(id, callback){
             getDeudores(function(data){
                 var response = data.filter(function(elem, index, array){
-                    return id = elem.cliente_id;
+                    return id = elem.usuario_id;
                 })[0];
 
                 callback(response);
