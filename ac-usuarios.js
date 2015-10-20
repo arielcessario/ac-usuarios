@@ -64,6 +64,11 @@
         return service;
 
         //Functions
+        /**
+         * Obtiene todo los deudores
+         * @param callback
+         * @returns {*}
+         */
         function getDeudores(callback) {
             return $http.post(url, {function: 'getDeudores'})
                 .success(function (data) {
