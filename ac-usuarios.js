@@ -47,6 +47,7 @@
         service.update = update;
 
         service.get = get;
+        service.getDeudores = getDeudores;
         service.getById = getById;
         service.getByParams = getByParams;
 
@@ -63,6 +64,16 @@
         return service;
 
         //Functions
+        function getDeudores(callback) {
+            return $http.post(url, {function: 'getDeudores'})
+                .success(function (data) {
+                    callback(data);
+                })
+                .error(function (data) {
+                    callback(data);
+                });
+        }
+
 
         /**
          *
