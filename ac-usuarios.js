@@ -48,6 +48,7 @@
 
         service.get = get;
         service.getDeudores = getDeudores;
+        service.getDeudorById = getDeudorById;
         service.getById = getById;
         service.getByParams = getByParams;
 
@@ -64,6 +65,21 @@
         return service;
 
         //Functions
+        /**
+         * @description Obtiene un deudor específico
+         * @param id
+         * @param callback
+         */
+        function getDeudorById(id, callback){
+            getDeudores(function(data){
+                var response = data.filter(function(elem, index, array){
+                    return id = elem.cliente_id;
+                })[0];
+
+                callback(response);
+            })
+        }
+
         /**
          * Obtiene todo los deudores
          * @param callback
