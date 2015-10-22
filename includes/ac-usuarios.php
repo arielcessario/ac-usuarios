@@ -111,11 +111,8 @@ from movimientos where cuenta_id like '1.1.2.%' and movimiento_id in
 //        array_push($deudores, $row);
     }
 
-
     echo json_encode($results);
 }
-
-
 
 /* @name: forgotPassword
  * @param $email = email del usuario
@@ -314,7 +311,8 @@ function login($mail, $password, $sucursal_id)
         if (password_verify($password, $hash)) {
             $results[0]['password'] = '';
             // Si la seguridad se encuentra habilitada, retorna el token y el usuario sin password
-            $results[0]->sucursal = $sucursal_id; //-1 == web
+            //$results[0]->sucursal = $sucursal_id; //-1 == web
+            //Comente la linea de arriba xq me saltaba error.
             if ($jwt_enabled) {
                 echo json_encode(
                     array(
