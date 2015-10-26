@@ -211,7 +211,9 @@
             store.remove(window.appName);
             $cookieStore.remove('user');
             UserVars.clearCache = true;
-            callback();
+            if(callback != undefined){
+                callback();
+            }
         }
 
 
