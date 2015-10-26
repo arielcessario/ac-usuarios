@@ -202,13 +202,15 @@
                 })
         }
 
-        /**@name: logout
-         @description: Logout
+        /**
+         * Realiza logout
+         * @param callback
          */
-        function logout() {
+        function logout(callback) {
             store.remove(window.appName);
             $cookieStore.remove('user');
             UserVars.clearCache = true;
+            callback();
         }
 
 
