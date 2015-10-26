@@ -57,6 +57,7 @@
 
         service.userExist = userExist;
         service.forgotPassword = forgotPassword;
+        service.changePassword = changePassword;
 
         service.goToPagina = goToPagina;
         service.next = next;
@@ -194,7 +195,7 @@
          */
         function userExist(mail, callback) {
             return $http.post(url,
-                {'function': 'existeUsuario', 'mail': mail})
+                {'function': 'userExist', 'mail': mail})
                 .success(function (data) {
                     callback(data);
                 })
@@ -281,6 +282,14 @@
             $cookieStore.set('user', user);
         }
 
+        /**
+         * @description Cambia una contraseña
+         * @param usuario_id
+         * @param pass_old
+         * @param pass_new
+         * @param callback
+         * @returns {*}
+         */
         function changePassword(usuario_id, pass_old, pass_new, callback) {
             return $http.post(url,
                 {
