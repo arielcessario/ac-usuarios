@@ -48,3 +48,34 @@ function checkSecurity()
     }
 
 }
+
+
+function validateRol($requerido)
+{
+
+    $requestHeaders = apache_request_headers();
+    $authorizationHeader = $requestHeaders['Authorization'];
+//    echo print_r(apache_request_headers());
+
+
+    if ($authorizationHeader == null) {
+        header('HTTP/1.0 401 Unauthorized');
+        echo "No authorization header sent";
+        exit();
+    }
+
+    // // validate the token
+    $pre_token = str_replace('Bearer ', '', $authorizationHeader);
+    $token = str_replace('"', '', $pre_token);
+    global $secret;
+    global $decoded_token;
+    $decoded_token = JWT::decode($token, base64_decode(strtr($secret, '-_', '+/')), false);
+
+    if($decoded_token->data->rol_id > $requerido){
+        header('HTTP/1.0 401 Unauthorized');
+        echo "No authorization header sent";
+        exit();
+    }
+
+
+}
