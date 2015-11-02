@@ -208,7 +208,7 @@ function randomPassword()
  * @return: JWT:string de token
  * todo: Agregar tiempos de expiración. Evaluar si hay que devolver algún dato dentro de data.
  */
-function createToken()
+function createToken($user)
 {
 
     $tokenId = base64_encode(mcrypt_create_iv(32));
@@ -230,11 +230,11 @@ function createToken()
         'exp' => $expire,           // Expire
         'aud' => $aud,           // Expire
         'data' => [                  // Data related to the signer user
-//            'id' => $id, // userid from the users table
+            'id' => $user->usuario_id, // userid from the users table
 //            'nombre' => $nombre, // User name
 //            'apellido' => $apellido, // User name
 //            'mail' => $mail, // User name
-//            'rol' => $rol // Rol
+            'rol' => $user->rol_id // Rol
         ]
     ];
 
@@ -316,7 +316,7 @@ function login($mail, $password, $sucursal_id)
             if ($jwt_enabled) {
                 echo json_encode(
                     array(
-                        'token' => createToken(),
+                        'token' => createToken($results[0]),
                         'user' => $results[0])
                 );
             } else {
