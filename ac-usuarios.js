@@ -30,8 +30,8 @@
     ;
 
 
-    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory', 'AcUtils'];
-    function UserService($http, $cookieStore, store, UserVars, $cacheFactory, AcUtils) {
+    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory', 'AcUtils', 'jwtHelper'];
+    function UserService($http, $cookieStore, store, UserVars, $cacheFactory, AcUtils, jwtHelper) {
         //Variables
         var service = {};
 
@@ -39,6 +39,7 @@
 
         //Function declarations
         service.getLogged = getLogged;
+        service.getFromToken = getFromToken;
         service.setLogged = setLogged;
         service.checkLastLogin = checkLastLogin;
 
@@ -271,6 +272,19 @@
 
             if (globals !== undefined) {
                 return globals;
+            } else {
+                return false;
+            }
+        }
+
+        /** @name: getFromToken
+         * @description: Retorna si existe un token de usuario.
+         */
+        function getFromToken() {
+            var globals = store.get(window.appName);
+
+            if (globals !== undefined) {
+                return jwtHelper.decodeToken(globals);
             } else {
                 return false;
             }
