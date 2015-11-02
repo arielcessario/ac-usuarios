@@ -276,6 +276,9 @@ function remove($usuario_id)
  */
 function get()
 {
+
+    validateRol(0);
+
     $db = new MysqliDb();
     $results = $db->get('usuarios');
 
