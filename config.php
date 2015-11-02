@@ -74,7 +74,8 @@ function validateRol($requerido)
     global $decoded_token;
     $decoded_token = JWT::decode($token, base64_decode(strtr($secret, '-_', '+/')), false);
 
-    if($decoded_token->data->rol_id > $requerido){
+    $rol = $decoded_token->data->rol;
+    if($rol > $requerido){
         header('HTTP/1.0 401 Unauthorized');
         echo "No authorization header sent";
         exit();
