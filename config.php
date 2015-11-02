@@ -49,7 +49,10 @@ function checkSecurity()
 
 }
 
-
+/**
+ * @description Valida que el rol del usuario sea el correcto
+ * @param $requerido
+ */
 function validateRol($requerido)
 {
 
