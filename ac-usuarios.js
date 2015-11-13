@@ -47,11 +47,13 @@
         service.remove = remove;
         service.update = update;
 
+
         service.get = get;
         service.getDeudores = getDeudores;
         service.getDeudorById = getDeudorById;
         service.getById = getById;
         service.getByParams = getByParams;
+
 
         service.login = login;
         service.logout = logout;
@@ -68,7 +70,7 @@
 
         //Functions
         /**
-         * @description Obtiene un deudor específico
+         * @description Obtiene un deudor especï¿½fico
          * @param id
          * @param callback
          */
@@ -101,7 +103,7 @@
         /**
          *
          * @description Retorna la lista filtrada de productos
-         * @param param -> String, separado por comas (,) que contiene la lista de parámetros de búsqueda, por ej: nombre, sku, tienen que ser el mismo nombre que en la base
+         * @param param -> String, separado por comas (,) que contiene la lista de parï¿½metros de bï¿½squeda, por ej: nombre, sku, tienen que ser el mismo nombre que en la base
          * @param value -> termino a buscar
          * @param exact_match -> true, busca la palabra exacta, false, busca si el termino aparece
          * @param callback
@@ -292,14 +294,14 @@
 
         /** @name: setLogged
          * @param user
-         * @description: Setea al usuario en una cookie. No está agregado al login ya que no en todos los casos se necesita cookie.
+         * @description: Setea al usuario en una cookie. No estï¿½ agregado al login ya que no en todos los casos se necesita cookie.
          */
         function setLogged(user) {
             $cookieStore.set('user', user);
         }
 
         /**
-         * @description Cambia una contraseña
+         * @description Cambia una contraseï¿½a
          * @param usuario_id
          * @param pass_old
          * @param pass_new
@@ -364,33 +366,33 @@
         }
 
         /**
-         * Para el uso de la páginación, definir en el controlador las siguientes variables:
+         * Para el uso de la pï¿½ginaciï¿½n, definir en el controlador las siguientes variables:
          *
          vm.start = 0;
          vm.pagina = UserVars.pagina;
-         UserVars.paginacion = 5; Cantidad de registros por página
+         UserVars.paginacion = 5; Cantidad de registros por pï¿½gina
          vm.end = UserVars.paginacion;
 
 
          En el HTML, en el ng-repeat agregar el siguiente filtro: limitTo:appCtrl.end:appCtrl.start;
 
-         Agregar un botón de next:
+         Agregar un botï¿½n de next:
          <button ng-click="appCtrl.next()">next</button>
 
-         Agregar un botón de prev:
+         Agregar un botï¿½n de prev:
          <button ng-click="appCtrl.prev()">prev</button>
 
-         Agregar un input para la página:
+         Agregar un input para la pï¿½gina:
          <input type="text" ng-keyup="appCtrl.goToPagina()" ng-model="appCtrl.pagina">
 
          */
 
 
         /**
-         * @description: Ir a página
+         * @description: Ir a pï¿½gina
          * @param pagina
          * @returns {*}
-         * uso: agregar un método
+         * uso: agregar un mï¿½todo
          vm.goToPagina = function () {
                 vm.start= UserService.goToPagina(vm.pagina).start;
             };
@@ -413,7 +415,7 @@
 
         /**
          * @name next
-         * @description Ir a próxima página
+         * @description Ir a prï¿½xima pï¿½gina
          * @returns {*}
          * uso agregar un metodo
          vm.next = function () {
@@ -433,9 +435,9 @@
 
         /**
          * @name previous
-         * @description Ir a página anterior
+         * @description Ir a pï¿½gina anterior
          * @returns {*}
-         * uso, agregar un método
+         * uso, agregar un mï¿½todo
          vm.prev = function () {
                 vm.start= UserService.prev().start;
                 vm.pagina = UserVars.pagina;
@@ -462,16 +464,16 @@
      * @constructor
      */
     function UserVars() {
-        // Cantidad de páginas total del recordset
+        // Cantidad de pï¿½ginas total del recordset
         this.paginas = 1;
-        // Página seleccionada
+        // Pï¿½gina seleccionada
         this.pagina = 1;
-        // Cantidad de registros por página
+        // Cantidad de registros por pï¿½gina
         this.paginacion = 10;
-        // Registro inicial, no es página, es el registro
+        // Registro inicial, no es pï¿½gina, es el registro
         this.start = 0;
 
-        // Indica si se debe limpiar el caché la próxima vez que se solicite un get
+        // Indica si se debe limpiar el cachï¿½ la prï¿½xima vez que se solicite un get
         this.clearCache = true;
 
         // Path al login

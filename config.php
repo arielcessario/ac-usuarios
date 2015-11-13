@@ -61,6 +61,7 @@ function validateRol($requerido)
 //    echo print_r(apache_request_headers());
 
 
+
     if ($authorizationHeader == null) {
         header('HTTP/1.0 401 Unauthorized');
         echo "No authorization header sent";

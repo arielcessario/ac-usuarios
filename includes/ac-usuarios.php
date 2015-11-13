@@ -231,9 +231,9 @@ function createToken($user)
         'aud' => $aud,           // Expire
         'data' => [                  // Data related to the signer user
             'id' => $user["usuario_id"], // userid from the users table
-//            'nombre' => $nombre, // User name
-//            'apellido' => $apellido, // User name
-//            'mail' => $mail, // User name
+            'nombre' => $user["nombre"], // User name
+            'apellido' => $user["apellido"], // User name
+            'mail' => $user["mail"], // User name
             'rol' => $user["rol_id"] // Rol
         ]
     ];
