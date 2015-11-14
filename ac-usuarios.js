@@ -285,7 +285,7 @@
         function getFromToken() {
             var globals = store.get(window.appName);
 
-            if (globals !== undefined) {
+            if (globals !== undefined && globals !== null) {
                 return jwtHelper.decodeToken(globals);
             } else {
                 return false;
