@@ -56,6 +56,12 @@ function checkSecurity()
 function validateRol($requerido)
 {
 
+    global $jwt_enabled;
+    if($jwt_enabled == false){
+        return;
+    }
+
+
     $requestHeaders = apache_request_headers();
     $authorizationHeader = $requestHeaders['Authorization'];
 //    echo print_r(apache_request_headers());
