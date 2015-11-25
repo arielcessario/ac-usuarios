@@ -63,6 +63,7 @@
 
 
         service.login = login;
+        service.loginSocial = loginSocial;
         service.loginFacebook = loginFacebook;
         service.loginGoogle = loginGoogle;
         service.logout = logout;
@@ -253,12 +254,32 @@
                 })
         }
 
+        /**
+         * @description Login directo a partir de los datos obtenidos socialamente
+         * @param user
+         * @param token
+         */
+        function loginSocial(user, token) {
+            $http.post(url, {'function': 'loginSocial', 'token': token, 'user': JSON.stringify(user)})
+                .success(function (data) {
+                    if (data != -1) {
+                        $cookieStore.put('user', data.user);
+                        store.set(window.appName, data.token);
+                    }
+                    callback_social(data);
+                })
+                .error(function (data) {
+                    callback_social(data);
+                })
+
+        }
+
 
         /**
          * @description function intermedia para poder seguir utilizando el callback del llamador en
          * @param data
          */
-        var callback_social = function(data){
+        var callback_social = function (data) {
         };
 
 
@@ -299,7 +320,7 @@
         function onLoginSuccess(profile, token) {
             userExist(profile.email, function (data) {
 
-                if(data > 0){
+                if (data > 0) {
                     var user = {
                         mail: profile.email
                     };
@@ -314,9 +335,10 @@
                         .error(function (data) {
                             callback_social(data);
                         })
-                }else{
+                } else {
                     // El usuario no existe, lo mando a creación y asigno lo que me devolvió el login
-                    UserVars.user = profile;
+                    UserVars.user_social = profile;
+                    UserVars.token_social = token;
                     callback_social(data);
 
                 }
@@ -587,8 +609,9 @@
         // Registro inicial, no es p�gina, es el registro
         this.start = 0;
 
-        // Usuario temporal
-        this.user = {};
+        // Usuario temporal Social
+        this.user_social = {};
+        this.token_social = '';
 
         // Indica si se debe limpiar el cach� la pr�xima vez que se solicite un get
         this.clearCache = true;
