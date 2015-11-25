@@ -1,7 +1,10 @@
 <?php
 
 // JWT Secret Key
-$secret = 'uiglp';
+//$secret = base64_encode('asdfwearsadfasdareasdfaeasdfaefawasadf');
+$secret = 'asdfwearsadfasdareasdfaeasdfaefawasadf';
+// JWT Secret Key Social / No cambiar, esto está fijado en nuestra cuenta auth0.
+$secret_social = 'LUc_cGQHgmKZyFd5ozKJHnujpam1JKb06FWnjjtnWH9htNKDEQFGNMHYUvX_6PgR';
 // JWT AUD
 $serverName = 'serverName';
 // false local / true production
@@ -30,7 +33,8 @@ function checkSecurity()
     global $secret;
     global $decoded_token;
     try {
-        $decoded_token = JWT::decode($token, base64_decode(strtr($secret, '-_', '+/')), false);
+//        $decoded_token = JWT::decode($token, base64_decode(strtr($secret, '-_', '+/')), true);
+        $decoded_token = JWT::decode($token, $secret, true);
     } catch (UnexpectedValueException $ex) {
         header('HTTP/1.0 401 Unauthorized');
         echo "Invalid token";
@@ -61,7 +65,6 @@ function validateRol($requerido)
         return;
     }
 
-
     $requestHeaders = apache_request_headers();
     $authorizationHeader = $requestHeaders['Authorization'];
 //    echo print_r(apache_request_headers());
@@ -79,7 +82,7 @@ function validateRol($requerido)
     $token = str_replace('"', '', $pre_token);
     global $secret;
     global $decoded_token;
-    $decoded_token = JWT::decode($token, base64_decode(strtr($secret, '-_', '+/')), false);
+    $decoded_token = JWT::decode($token, $secret, true);
 
     $rol = $decoded_token->data->rol;
     if($rol > $requerido){

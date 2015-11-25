@@ -38,7 +38,8 @@ if ($jwt_enabled) {
     if ($decoded != null &&
         ($decoded->function == 'login' ||
             $decoded->function == 'create' ||
-            $decoded->function == 'clientExist' ||
+            $decoded->function == 'userExist' ||
+            $decoded->function == 'loginSocial' ||
             $decoded->function == 'forgotPassword')
     ) {
         $token = '';
@@ -52,6 +53,8 @@ if ($jwt_enabled) {
 if ($decoded != null) {
     if ($decoded->function == 'login') {
         login($decoded->mail, $decoded->password, $decoded->sucursal_id);
+    } elseif ($decoded->function == 'loginSocial') {
+        loginSocial($decoded->token, $decoded->user);
     } else if ($decoded->function == 'checkLastLogin') {
         checkLastLogin($decoded->userid);
     } else if ($decoded->function == 'create') {
@@ -71,7 +74,7 @@ if ($decoded != null) {
     $function = $_GET["function"];
     if ($function == 'get') {
         get();
-    }elseif($function == 'getDeudores'){
+    } elseif ($function == 'getDeudores') {
         getDeudores();
     }
 }
@@ -82,6 +85,8 @@ if ($decoded != null) {
  */
 function getDeudores()
 {
+
+    validateRol(0);
 
     $db = new MysqliDb();
     $deudores = array();
@@ -252,6 +257,8 @@ function createToken($user)
  */
 function remove($usuario_id)
 {
+    validateRol(0);
+
     $db = new MysqliDb();
 
     $db->where("usuario_id", $usuario_id);
@@ -310,6 +317,10 @@ function login($mail, $password, $sucursal_id)
 
     if ($db->count > 0) {
 
+        if($results[0]['social_login'] !== 0){
+            echo json_encode(-1);
+            exit;
+        }
         $hash = $results[0]['password'];
         if (password_verify($password, $hash)) {
             $results[0]['password'] = '';
@@ -333,6 +344,43 @@ function login($mail, $password, $sucursal_id)
     } else {
         echo json_encode(-1);
     }
+}
+
+/**
+ * @description Metodo para ingresar con una red social
+ * @param $token_social
+ * @param $user
+ */
+function loginSocial($token_social, $user)
+{
+    require_once 'jwt_helper.php';
+    // // validate the token
+    $pre_token = str_replace('Bearer ', '', $token_social);
+    $token = str_replace('"', '', $pre_token);
+    global $secret_social;
+    global $decoded_token;
+    try {
+        $decoded_token = JWT::decode($token, base64_decode(strtr($secret_social, '-_', '+/')), true);
+
+        $db = new MysqliDb();
+
+        $user_decoded = json_decode($user);
+        $db->where('mail', $user_decoded->mail);
+        $results = $db->get('usuarios');
+
+        $results[0]["password"] = '';
+        echo json_encode(
+            array(
+                'token' => createToken($results[0]),
+                'user' => $results[0])
+        );
+
+    } catch (UnexpectedValueException $ex) {
+        header('HTTP/1.0 401 Unauthorized');
+        echo "Invalid token";
+        exit();
+    }
+
 
 
 }
@@ -390,7 +438,9 @@ function create($user)
         'saldo' => $user_decoded->saldo,
         'password' => $password,
         'rol_id' => $user_decoded->rol_id,
-        'news_letter' => $user_decoded->news_letter
+        'news_letter' => $user_decoded->news_letter,
+        'cbu' => $user_decoded->cbu,
+        'social_login' => $user_decoded->social_login,
     );
 
     $result = $db->insert('usuarios', $data);
@@ -546,12 +596,13 @@ function update($user)
  * @param $sucursal_id
  * @param $ok
  */
-function addLogin($usuario_id, $sucursal_id, $ok){
+function addLogin($usuario_id, $sucursal_id, $ok)
+{
     $db = new MysqliDb();
-    $data = array('usuario_id'=> $usuario_id, 
+    $data = array('usuario_id' => $usuario_id,
         'sucursal_id' => $sucursal_id,
         'ok' => $ok);
-    
+
     $db->insert('logins', $data);
 
 }
@@ -561,29 +612,32 @@ function addLogin($usuario_id, $sucursal_id, $ok){
  * @param $usuario
  * @return mixed
  */
-function checkUsuario($usuario) {
+function checkUsuario($usuario)
+{
 
 
-    $usuario->nombre = (!array_key_exists("nombre" , $usuario)) ? '' : $usuario->nombre;
-    $usuario->apellido = (!array_key_exists("apellido" , $usuario)) ? '' : $usuario->apellido;
-    $usuario->mail = (!array_key_exists("mail" , $usuario)) ? '' : $usuario->mail;
-    $usuario->nacionalidad_id = (!array_key_exists("nacionalidad_id" , $usuario)) ? 0 : $usuario->nacionalidad_id;
-    $usuario->tipo_doc = (!array_key_exists("tipo_doc" , $usuario)) ? '' : $usuario->tipo_doc;
-    $usuario->nro_doc = (!array_key_exists("nro_doc" , $usuario)) ? '' : $usuario->nro_doc;
-    $usuario->comentarios = (!array_key_exists("comentarios" , $usuario)) ? '' : $usuario->comentarios;
-    $usuario->marcado = (!array_key_exists("marcado" , $usuario)) ? 0 : $usuario->marcado;
-    $usuario->telefono = (!array_key_exists("telefono" , $usuario)) ? '' : $usuario->telefono;
-    $usuario->fecha_nacimiento = (!array_key_exists("fecha_nacimiento" , $usuario)) ? '' : $usuario->fecha_nacimiento;
-    $usuario->profesion_id = (!array_key_exists("profesion_id" , $usuario)) ? 0 : $usuario->profesion_id;
-    $usuario->saldo = (!array_key_exists("saldo" , $usuario)) ? 0.0 : $usuario->saldo;
-    $usuario->password = (!array_key_exists("password" , $usuario)) ? '' : $usuario->password;
-    $usuario->rol_id = (!array_key_exists("rol_id" , $usuario)) ? 0 : $usuario->rol_id;
-    $usuario->news_letter = (!array_key_exists("news_letter" , $usuario)) ? '' : $usuario->news_letter;
-    $usuario->calle = (!array_key_exists("calle" , $usuario)) ? '' : $usuario->calle;
-    $usuario->puerta = (!array_key_exists("puerta" , $usuario)) ? '' : $usuario->puerta;
-    $usuario->piso = (!array_key_exists("piso" , $usuario)) ? 0 : $usuario->piso;
-    $usuario->nro = (!array_key_exists("nro" , $usuario)) ? 0 : $usuario->nro;
-    $usuario->ciudad_id = (!array_key_exists("ciudad_id" , $usuario)) ? 0 : $usuario->ciudad_id;
+    $usuario->nombre = (!array_key_exists("nombre", $usuario)) ? '' : $usuario->nombre;
+    $usuario->apellido = (!array_key_exists("apellido", $usuario)) ? '' : $usuario->apellido;
+    $usuario->mail = (!array_key_exists("mail", $usuario)) ? '' : $usuario->mail;
+    $usuario->nacionalidad_id = (!array_key_exists("nacionalidad_id", $usuario)) ? 0 : $usuario->nacionalidad_id;
+    $usuario->tipo_doc = (!array_key_exists("tipo_doc", $usuario)) ? 0 : $usuario->tipo_doc;
+    $usuario->nro_doc = (!array_key_exists("nro_doc", $usuario)) ? '' : $usuario->nro_doc;
+    $usuario->comentarios = (!array_key_exists("comentarios", $usuario)) ? '' : $usuario->comentarios;
+    $usuario->marcado = (!array_key_exists("marcado", $usuario)) ? 0 : $usuario->marcado;
+    $usuario->telefono = (!array_key_exists("telefono", $usuario)) ? '' : $usuario->telefono;
+    $usuario->fecha_nacimiento = (!array_key_exists("fecha_nacimiento", $usuario)) ? '' : $usuario->fecha_nacimiento;
+    $usuario->profesion_id = (!array_key_exists("profesion_id", $usuario)) ? 0 : $usuario->profesion_id;
+    $usuario->saldo = (!array_key_exists("saldo", $usuario)) ? 0.0 : $usuario->saldo;
+    $usuario->password = (!array_key_exists("password", $usuario)) ? '' : $usuario->password;
+    $usuario->rol_id = (!array_key_exists("rol_id", $usuario)) ? 0 : $usuario->rol_id;
+    $usuario->news_letter = (!array_key_exists("news_letter", $usuario)) ? 0 : $usuario->news_letter;
+    $usuario->calle = (!array_key_exists("calle", $usuario)) ? '' : $usuario->calle;
+    $usuario->puerta = (!array_key_exists("puerta", $usuario)) ? '' : $usuario->puerta;
+    $usuario->piso = (!array_key_exists("piso", $usuario)) ? 0 : $usuario->piso;
+    $usuario->nro = (!array_key_exists("nro", $usuario)) ? 0 : $usuario->nro;
+    $usuario->ciudad_id = (!array_key_exists("ciudad_id", $usuario)) ? 0 : $usuario->ciudad_id;
+    $usuario->cbu = (!array_key_exists("cbu", $usuario)) ? 0 : $usuario->cbu;
+    $usuario->social_login = (!array_key_exists("social_login", $usuario)) ? 0 : $usuario->social_login;
 
     return $usuario;
 }

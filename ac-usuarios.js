@@ -4,14 +4,16 @@
     var scripts = document.getElementsByTagName("script");
     var currentScriptPath = scripts[scripts.length - 1].src;
 
-    if(currentScriptPath.length == 0){
+    if (currentScriptPath.length == 0) {
         currentScriptPath = window.installPath + '/ac-angular-usuarios/includes/ac-usuarios.php';
     }
 
     angular.module('acUsuarios', ['ngCookies'])
         .config(['$routeProvider', 'jwtInterceptorProvider', '$httpProvider',
             function ($routeProvider, jwtInterceptorProvider, $httpProvider) {
+
                 jwtInterceptorProvider.tokenGetter = function (store) {
+                    console.log(store.get(window.appName));
                     return store.get(window.appName);
                 };
                 $httpProvider.interceptors.push('jwtInterceptor');
@@ -34,8 +36,8 @@
     ;
 
 
-    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory', 'AcUtils', 'jwtHelper'];
-    function UserService($http, $cookieStore, store, UserVars, $cacheFactory, AcUtils, jwtHelper) {
+    UserService.$inject = ['$http', '$cookieStore', 'store', 'UserVars', '$cacheFactory', 'AcUtils', 'jwtHelper', 'auth'];
+    function UserService($http, $cookieStore, store, UserVars, $cacheFactory, AcUtils, jwtHelper, auth) {
         //Variables
         var service = {};
 
@@ -48,6 +50,7 @@
         service.checkLastLogin = checkLastLogin;
 
         service.create = create;
+        service.createFromSocial = createFromSocial;
         service.remove = remove;
         service.update = update;
 
@@ -60,6 +63,8 @@
 
 
         service.login = login;
+        service.loginFacebook = loginFacebook;
+        service.loginGoogle = loginGoogle;
         service.logout = logout;
 
         service.userExist = userExist;
@@ -78,9 +83,9 @@
          * @param id
          * @param callback
          */
-        function getDeudorById(id, callback){
-            getDeudores(function(data){
-                var response = data.filter(function(elem, index, array){
+        function getDeudorById(id, callback) {
+            getDeudores(function (data) {
+                var response = data.filter(function (elem, index, array) {
                     return id = elem.usuario_id;
                 })[0];
 
@@ -218,7 +223,7 @@
             store.remove(window.appName);
             $cookieStore.remove('user');
             UserVars.clearCache = true;
-            if(callback != undefined){
+            if (callback != undefined) {
                 callback();
             }
         }
@@ -246,6 +251,83 @@
                 .error(function (data) {
                     callback(data);
                 })
+        }
+
+
+        var callback_social = function(data){
+            console.log(data);
+        };
+
+
+        function loginFacebook(callback) {
+
+            callback_social = callback;
+            auth.signin({
+                popup: true,
+                connections: ['facebook'],
+                scope: 'openid name email'
+            }, onLoginSuccess, onLoginFailed);
+        }
+
+        function loginGoogle(callback) {
+
+            callback_social = callback;
+            auth.signin({
+                popup: true,
+                connections: ['google-oauth2'],
+                scope: 'openid name email'
+            }, onLoginSuccess, onLoginFailed);
+        }
+
+        function onLoginSuccess(profile, token) {
+            userExist(profile.email, function (data) {
+
+                if(data > 0){
+                    var user = {
+                        mail: profile.email
+                    };
+                    $http.post(url, {'function': 'loginSocial', 'token': token, 'user': JSON.stringify(user)})
+                        .success(function (data) {
+                            if (data != -1) {
+                                $cookieStore.put('user', data.user);
+                                store.set(window.appName, data.token);
+                            }
+                            callback_social(data);
+                        })
+                        .error(function (data) {
+                            console.log(data);
+                            callback_social(data);
+                        })
+                }else{
+                    // El usuario no existe, lo mando a creación y asigno lo que me devolvió el login
+                    UserVars.user = profile;
+                    callback_social(data);
+
+                }
+            });
+
+        }
+
+        function onLoginFailed(data) {
+            callback_social(data);
+            //$scope.message.text = 'invalid credentials';
+        }
+
+
+        function createFromSocial(usuario, callback) {
+            return $http.post(url,
+                {
+                    'function': 'create',
+                    'user': JSON.stringify(usuario)
+                })
+                .success(function (data) {
+                    UserVars.clearCache = true;
+                    callback(data);
+                })
+                .error(function (data) {
+                    UserVars.clearCache = true;
+                    callback(data);
+                });
         }
 
         /**
@@ -476,6 +558,9 @@
         this.paginacion = 10;
         // Registro inicial, no es p�gina, es el registro
         this.start = 0;
+
+        // Usuario temporal
+        this.user = {};
 
         // Indica si se debe limpiar el cach� la pr�xima vez que se solicite un get
         this.clearCache = true;

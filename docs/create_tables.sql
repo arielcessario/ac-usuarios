@@ -18,8 +18,9 @@ CREATE TABLE usuarios (
   rol_id int(11) NOT NULL DEFAULT '0', -- TODO: Just for now: 0 - Admin; 1 - Usuario; 2 - Proveedor; 3 - Cliente
   news_letter int(1) DEFAULT NULL,
   cbu varchar(20) DEFAULT NULL,
+  social_login int(1) DEFAULT 0 COMMENT 'Especifica si utiliza una cuenta social para logearse | 0: no, 1:google, 2:facebook',
   PRIMARY KEY (usuario_id)
-) ENGINE=MyISAM AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 # DIRECCIONES
 CREATE TABLE direcciones (
