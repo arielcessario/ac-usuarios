@@ -254,11 +254,18 @@
         }
 
 
+        /**
+         * @description function intermedia para poder seguir utilizando el callback del llamador en
+         * @param data
+         */
         var callback_social = function(data){
-            console.log(data);
         };
 
 
+        /**
+         * @description Login para facebook
+         * @param callback
+         */
         function loginFacebook(callback) {
 
             callback_social = callback;
@@ -269,6 +276,11 @@
             }, onLoginSuccess, onLoginFailed);
         }
 
+
+        /**
+         * @description Login para gmail
+         * @param callback
+         */
         function loginGoogle(callback) {
 
             callback_social = callback;
@@ -279,6 +291,11 @@
             }, onLoginSuccess, onLoginFailed);
         }
 
+        /**
+         * @description Callback para la respuesta positiva del login con face o gmail
+         * @param profile
+         * @param token
+         */
         function onLoginSuccess(profile, token) {
             userExist(profile.email, function (data) {
 
@@ -295,7 +312,6 @@
                             callback_social(data);
                         })
                         .error(function (data) {
-                            console.log(data);
                             callback_social(data);
                         })
                 }else{
@@ -308,12 +324,24 @@
 
         }
 
+
+        /**
+         * @description Callback para la respuesta negativa del login con face o gmail
+         * @param profile
+         * @param token
+         */
         function onLoginFailed(data) {
             callback_social(data);
             //$scope.message.text = 'invalid credentials';
         }
 
 
+        /**
+         * @description Crea un usuario a partir de los datos sociales
+         * @param usuario
+         * @param callback
+         * @returns {*}
+         */
         function createFromSocial(usuario, callback) {
             return $http.post(url,
                 {
