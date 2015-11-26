@@ -13,7 +13,6 @@
             function ($routeProvider, jwtInterceptorProvider, $httpProvider) {
 
                 jwtInterceptorProvider.tokenGetter = function (store) {
-                    console.log(store.get(window.appName));
                     return store.get(window.appName);
                 };
                 $httpProvider.interceptors.push('jwtInterceptor');
