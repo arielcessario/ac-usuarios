@@ -9,6 +9,8 @@ $secret_social = 'LUc_cGQHgmKZyFd5ozKJHnujpam1JKb06FWnjjtnWH9htNKDEQFGNMHYUvX_6P
 $serverName = 'serverName';
 // false local / true production
 $jwt_enabled = false;
+// Carpeta de imágenes
+$image_path = "./images/";
 
 /* @name: checkSecurity
  * @param
