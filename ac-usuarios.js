@@ -221,7 +221,7 @@
          */
         function logout(callback) {
             store.remove(window.appName);
-            $cookieStore.remove('user');
+            $cookieStore.remove(window.appName);
             UserVars.clearCache = true;
             if (callback != undefined) {
                 callback();
@@ -243,7 +243,7 @@
                 {'function': 'login', 'mail': mail, 'password': password, 'sucursal_id': sucursal_id})
                 .success(function (data) {
                     if (data != -1) {
-                        $cookieStore.put('user', data.user);
+                        $cookieStore.put(window.appName, data.user);
                         store.set(window.appName, data.token);
                     }
                     callback(data);
@@ -262,7 +262,7 @@
             $http.post(url, {'function': 'loginSocial', 'token': token, 'user': JSON.stringify(user)})
                 .success(function (data) {
                     if (data != -1) {
-                        $cookieStore.put('user', data.user);
+                        $cookieStore.put(window.appName, data.user);
                         store.set(window.appName, data.token);
                     }
                     callback_social(data);
@@ -326,7 +326,7 @@
                     $http.post(url, {'function': 'loginSocial', 'token': token, 'user': JSON.stringify(user)})
                         .success(function (data) {
                             if (data != -1) {
-                                $cookieStore.put('user', data.user);
+                                $cookieStore.put(window.appName, data.user);
                                 store.set(window.appName, data.token);
                             }
                             callback_social(data);
@@ -405,7 +405,7 @@
          * @description: Retorna si existe una cookie de usuario.
          */
         function getLogged() {
-            var globals = $cookieStore.get('user');
+            var globals = $cookieStore.get(window.appName);
 
             if (globals !== undefined) {
                 return globals;
@@ -432,7 +432,7 @@
          * @description: Setea al usuario en una cookie. No est� agregado al login ya que no en todos los casos se necesita cookie.
          */
         function setLogged(user) {
-            $cookieStore.set('user', user);
+            $cookieStore.set(window.appName, user);
         }
 
         /**
