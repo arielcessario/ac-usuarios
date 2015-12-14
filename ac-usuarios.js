@@ -432,7 +432,7 @@
          * @description: Setea al usuario en una cookie. No est� agregado al login ya que no en todos los casos se necesita cookie.
          */
         function setLogged(user) {
-            $cookieStore.set(window.appName, user);
+            $cookieStore.put(window.appName, user);
         }
 
         /**
