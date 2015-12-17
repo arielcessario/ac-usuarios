@@ -558,7 +558,9 @@ function update($user)
         'profesion_id' => $user_decoded->profesion_id,
         'saldo' => $user_decoded->saldo,
         'rol_id' => $user_decoded->rol_id,
-        'news_letter' => $user_decoded->news_letter
+        'news_letter' => $user_decoded->news_letter,
+        'cbu' => $user_decoded->cbu,
+        'social_login' => $user_decoded->social_login
     );
 
     if ($user_decoded->password != '') {
