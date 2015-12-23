@@ -313,7 +313,7 @@ function login($mail, $password, $sucursal_id)
     $db->where("mail", $mail);
 
     $db->join("direcciones d", "d.usuario_id=u.usuario_id", "LEFT");
-    $results = $db->get("usuarios");
+    $results = $db->get("usuarios u");
 
     global $jwt_enabled;
 
