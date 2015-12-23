@@ -147,6 +147,7 @@ function forgotPassword($email)
         $mail->Password = 'ventas';                           // SMTP password
         $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
         $mail->Port = 465;
+        $mail->CharSet = 'UTF-8';
 
         $mail->From = 'ventas@ac-desarrollos.com';
         $mail->FromName = 'UIGLP';
