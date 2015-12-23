@@ -312,6 +312,7 @@ function login($mail, $password, $sucursal_id)
     $db = new MysqliDb();
     $db->where("mail", $mail);
 
+    $db->join("direcciones d", "d.usuario_id=u.usuario_id", "LEFT");
     $results = $db->get("usuarios");
 
     global $jwt_enabled;
